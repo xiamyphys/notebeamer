@@ -1,0 +1,29 @@
+\documentclass[darker,libertinus]{notebeamer}
+\begin{document}
+    % Assign the author & mail address
+    \author{Axia}              \mail{xiamyphys@gmail.com}
+    % Assign the titlepage, sitcker and logo file
+    \flyleaf{titlepage1.pdf}   \sticker{Inuyasa.jpg}
+    % Assign the logo link and info
+    \logo[https://sci.hdu.edu.cn]{HDU.pdf}[Hangzhou·Zhejiang]
+    % Create a cover page with color H6, title and subtitle 
+    \notebook[H6]{Quantum Transport}[Dirac Fermion Discussion Group]
+    % Assign the chapter title and the file will be inserted after
+    \chapter[PHYSICAL REVIEW B VOLUME 50, NUMBER 8]{newnotedemo.pdf}
+    % Insert the page 3--4 of the file with the format 1 image per page
+    \newnote{3}{4}
+    % Change the titlepage in the subsequent notebooks
+    \flyleaf{titlepage2.pdf}
+    % Create a cover page with color H5, title
+    \notebook[H5]{AQM \& SPD}
+    \chapter[Introduction \& Fundamental Concepts]{newnote3sdemo.pdf}
+    % Insert the page 1--2, 4--6 of the file with the format 3 images per page
+    \newnotesss{1}{2}           \newnotesss{4}{6}
+    \chapter[SPD Basic: Transport]{newnote4sdemo.pdf}
+    % Insert the page 1--2, 4--6, 7--10 of the file with the format 4 images per page
+    \newnotessss{1}{2}          \newnotessss{4}{6}          \newnotessss{7}{10}
+    % Create an empty note paper with no page number
+    \emptynote*[3]
+    % Create an empty note paper with logo and info but no page number
+    \emptyhdunote*[2]
+\end{document}
