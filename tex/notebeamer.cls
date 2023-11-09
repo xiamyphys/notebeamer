@@ -14,7 +14,7 @@
 %% ************************************************************************************************************
 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{notebeamer}[09/11/2023 v2.1a NoteBeamer document class]
+\ProvidesClass{notebeamer}[11/11/2023 v2.1b NoteBeamer document class]
 
 %% Global opinions
 \RequirePackage{kvoptions}
@@ -43,10 +43,10 @@
 \RequirePackage{fontawesome5}
 
 %% Global definitions
-\newcommand{\notewidth}{6.32}
-\newcommand{\noteheight}{8.18}
+\def\notewidth{6.32}
+\def\noteheight{8.18}
 \renewcommand{\author}[1]{\gdef\@author{#1}}
-\newcommand{\mail}[1]{\gdef\@mail{\href{mailto:#1}{\nolinkurl{#1}}}}
+\def\mail#1{\gdef\@mail{\href{mailto:#1}{\nolinkurl{#1}}}}
 \NewDocumentCommand\chapter{s o m}{
     \IfBooleanTF{#1}{}{
         \refstepcounter{chap}
@@ -55,8 +55,8 @@
     \gdef\@courseware{#3}
     \setcounter{note}{0}
 }
-\newcommand{\flyleaf}[1]{\gdef\@flyleaf{#1}}
-\newcommand{\sticker}[1]{\gdef\@sticker{#1}}
+\def\flyleaf#1{\gdef\@flyleaf{#1}}
+\def\sticker#1{\gdef\@sticker{#1}}
 \NewDocumentCommand\logo{O{https://www.hdu.edu.cn} m O{Hangzhou·Zhejiang}}{\gdef\@edu{#1}\gdef\@logo{#2}\gdef\@address{#3}}
 
 %% Fonts
@@ -78,7 +78,7 @@
 \definecolor{紺色}{HTML}{223A70}
 \newcounter{chap}
 \newcounter{note}
-\newcommand{\chaptername}{\faIcon{seedling} Chapter}
+\def\chaptername{\faIcon{seedling} Chapter}
 
 %%%% 1 note per page
 \newcommand{\newnote}[2]{
