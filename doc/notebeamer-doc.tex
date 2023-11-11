@@ -49,8 +49,7 @@
 \hypersetup{colorlinks,urlcolor=H1,linkcolor=H2,filecolor=filecolor,pdfstartview=FitH,pdfview=FitH,pdfcreator=XeTeX output}
 
 \renewcommand*\l@subsection{\@dottedtocline{2}{1.5em}{2.1em}}
-\def\@pkg#1{\texorpdfstring{\href{https://www.ctan.org/pkg/#1}%
-{\textcolor{pkgcolor}{\textsf{#1}}}}{“#1”}}
+\def\@pkg#1{\texorpdfstring{\href{https://www.ctan.org/pkg/#1}{\textcolor{pkgcolor}{\textsf{#1}}}}{“#1”}}
 \def\s@pkg#1{\texorpdfstring{\textcolor{pkgcolor}{\textsf{#1}}}{“#1”}}
 \DeclareRobustCommand\pkg{\@ifstar\s@pkg\@pkg}
 \def\mode#1{\texorpdfstring{\textcolor{moducolor}{\textsf{#1}}}{“#1”}}
@@ -65,7 +64,7 @@
 \ddmmyyyydate
 \date{\today}
 \affil[1]{\href{mailto:xiamyphys@gmail.com}{\texttt{xiamyphys@gmail.com}}}
-\date{\today\quad Version 2.1b\thanks{%
+\date{\today\quad Version 2.2b\thanks{%
   \url{https://github.com/xiamyphys/NoteBeamer}}}
 \begin{document}
 \maketitle
@@ -87,7 +86,7 @@ If you meet bugs when using this template, or you have better suggestions or ide
 Also, you can join my \textsf\LaTeX{} Template Discussion \href{https://qm.qq.com/q/OnHzbNvVAG}{QQ Group: 760570712} to communicate with me and get the insider preview edition of the template.
 
 \subsection{Packages required}
-This template is based on the template \pkg{standalone}. And it requires \pkg{tikz} package to plot some graphics, \pkg{kvoptions} and \pkg{etoolbox} packages to provide global opinions, \pkg{graphics} package to provides the \verb|draft| mode, \pkg{xparse} to provide the commands with star\footnote{This is an awful idea, because using the original command can be better than using a package.}\footnote{In the later versions, the template will change to use the original commands of \textsf\LaTeX{$2\varepsilon$} to avoid using the package \pkg{xparse}, which can improve the compilation efficiency in some ways.}, \pkg{hyperref} package provides link jump function, \pkg{ctex} package to supports the \textbf{Chinese, Simplified} language and \pkg{fontawesome5} package to provides a set of beautiful icons.
+This template is based on the template \pkg{standalone}. And it requires \pkg{tikz} package to plot some graphics, \pkg{kvoptions} and \pkg{etoolbox} packages to provide global opinions, \pkg{graphics} package to provides the \mode{draft} mode, \pkg{xparse} to provide the commands with star, \pkg{hyperref} package provides link jump function, \pkg{ctex} package to supports the \textbf{Chinese, Simplified} language and \pkg{fontawesome5} package to provides a set of beautiful icons.
 
 I strongly suggest that you should use cmd to implement the commands to update all the packages to the latest version or switch to portable version instead.
 \begin{verbatim}
@@ -95,33 +94,39 @@ I strongly suggest that you should use cmd to implement the commands to update a
     tlmgr update --all
 \end{verbatim}
 
-If you are in some areas with awful Internet environment, you can choose proper mirror source or use other means\footnote{Please comply with local network regulations.}. To learn more, please refer to \href{https://tex.stackexchange.com/questions/55437/how-do-i-update-my-tex-distribution}{How do I update my TEX distribution?}
+Remember to choose the proper mirror source in your region. To learn more, please refer to \href{https://tex.stackexchange.com/questions/55437/how-do-i-update-my-tex-distribution}{How do I update my TEX distribution?}
 
 \subsection{Loading \pkg{NoteBeamer} and its modes}
-Save the file \verb|notebeamer.cls| to your project's root directory, and then create a \verb|.tex| file, just input the command \verb|\documentclass{notebeamer}| on the first line.
+Update your \sffamily\TeX distribution or just save the file \verb|notebeamer.cls| to your project's root directory, then create a \verb|.tex| file, just input the command \verb|\documentclass{notebeamer}| on the first line.
 
-The template provides two modes, \mode{draft} and \mode{color}. Just add the options of the modes you want separately in the square bracket of the command \verb|\documentclass[options]{notebeamer}| in your \verb|.tex| file.
+The template provides three modes: \mode{draft}, \mode{color} and \mode{font}. Just add the options of the modes separately by commas in the square bracket of the command in your \verb|.tex| file, such as
+
+\begin{verbatim}
+    \documentclass[draft,dark,libertinus]{notebeamer}
+\end{verbatim}
 
 \section{Modes of \pkg{NoteBeamer}}
 
 
 \subsection{The \mode{draft} mode}
-Like most of the templates, this template also provide \mode{draft} mode (with the support of package \pkg{graphics}), \sffamily\TeX{} will only read for size info of pages you input, and a box of the correct size is printed with the filename in.
+Like most of the templates, this template also provide all modes provided by \pkg{graphics} package such as \mode{draft}, \sffamily\TeX{} will only read for size info of pages you input, and a box of the correct size is printed with the filename in.
 
 This can accelerate the speed of compile and you can preview the effect quickly when you input a file with too many pages and (or) its size is too large. After you make sure that there's no formatting errors, you can cancel this mode just to wait until compiled.
 
-\subsection{The \mode{normal}, \mode{lighter}, \& \mode{darker} modes}
-This mode can make the color of the covers you create in this template get lighter or darker, and the default opinion is \mode{normal}.
+The files corresponding to the commands \cmd{sticker}, \cmd{logo} and \cmd{flyleaf} can be stored in a folder named \verb|figure(s)|, \verb|image(s)|, \verb|graphic(s)| or \verb|picture(s)|, and you needn't to write these directories again in these commands because this template has already set these directories as indexes. Just as shown in the file tree in the example in \nameref{dirtree}.
 
-\subsection{The \mode{times} \& \mode{libertinus} modes}
-This mode can deside which font the notebook will use: The default \emph{New Times Roman} font or the \emph{Libertinus} font. You can use Libertinus fonts if you've installed it on your computer, and the default opinion is \mode{times}.
+\subsection{The \mode{color} mode}
+This mode has three opinions, \mode{normal}, \mode{lighter} and \& \mode{darker}, which can make the color of the covers you create in this template get lighter or darker, and the default opinion is \mode{normal}.
+
+\subsection{The \mode{font} mode}
+This mode has two opinions, \mode{times} and \mode{libertinus}, which can deside which font the notebook will use: The default \emph{New Times Roman} font or the \emph{Libertinus} font. You can use Libertinus fonts if you've installed it on your computer, and the default opinion is \mode{times}.
 
 \section{Commands of \pkg{NoteBeamer}}
 
 \subsection{The \cmd{author}, \cmd{mail}, \cmd{flyleaf}, \cmd{sticker} and \cmd{logo} commands}
 \begin{verbatim}
-    \author{Your Name}      \mail{Your Mail Address}
-    \flyleaf{titlepage.pdf} \sticker{sticker.png}
+    \author{Your Name}          \mail{Your Mail Address}
+    \flyleaf{titlepage.pdf}     \sticker{sticker.png}
     \logo[link]{logofile.pdf}[info]
 \end{verbatim}
 \begin{itemize}
@@ -134,8 +139,6 @@ This mode can deside which font the notebook will use: The default \emph{New Tim
     There will be a sticker on the south east of the note paper after you add, and there will be a logo on the north west corner of the cover page and HDU note paper; otherwise it won't.
 
     The first and third variable of the command \cmd{logo} can assign the link and info of the logo, which are optional.
-
-    \item The files corresponding to the commands \verb|sticker|, \verb|logo| and \verb|flyleaf| can be stored in a folder named \verb|figure(s)|, \verb|image(s)|, \verb|graphic(s)| or \verb|picture(s)|, and you needn't to write these directories again in these commands because this template has already set these directories as indexes. Just as shown in the file tree in the example in \nameref{dirtree}.
 \end{itemize}
 
 \paragraph{The commands above are all repeatable, which can reassign the values that these commands assigned before.}
@@ -194,6 +197,9 @@ While considering the suggestions from friends, I am also thinking about how to 
 
 \textsf{\bfseries Version 2.1a} was finished developing on 9 November, 2023. This version has fixed some bugs, and now supports inserting non-consecutive page numbers of the same file, and you can inserting a certain number of empty note papers with only one command. Also, this version has redesigned the top and bottom margins and the height between note lines in response to the suggestion from \href{https://qm.qq.com/q/OnHzbNvVAG}{QQ Group} member. What's more, this version supports the `Libertinus' font, which can make users have a better visual effect.
 
+\textsf{\bfseries Version 2.2b} was finished developing on 11 November, 2023. This version has fixed some bugs, and partical commands in this version has changed to use \sffamily\LaTeX{2e} original commands.
+
+\newpage
 \datechange{01/11/2023}{Version 2.0a}
 \begin{itemize}
     \item Simplify the command of inserting 3 \& 4 images per page.
@@ -213,8 +219,9 @@ While considering the suggestions from friends, I am also thinking about how to 
     \item Other detailed adjustments.
 \end{itemize}
 
-\datechange{\today}{Version 2.1b}
+\datechange{\today}{Version 2.2b}
 \begin{itemize}
+    \item Fixed the image position error when inserting 3 and 4 images per note page.
     \item Partially using \sffamily\LaTeX{2e} original commands.
 \end{itemize}
 
@@ -228,22 +235,6 @@ While considering the suggestions from friends, I am also thinking about how to 
 \label{dirtree}
 \begin{minipage}{0.48\textwidth}
     \dirtree{%
-    .1 doc/.
-    .2 images/.
-    .3 HDU.pdf.
-    .3 Inuyasa.jpg.
-    .3 titlepage1.pdf.
-    .3 titlepage2.pdf.
-    .3 newnotedemo.pdf.
-    .3 newnote3sdemo.pdf.
-    .3 newnote4sdemo.pdf.
-    .2 notebeamer-demo.tex.
-    .2 notebeamer-demo.pdf.
-    }
-\end{minipage}
-\hfill
-\begin{minipage}{0.48\textwidth}
-    \dirtree{%
     .1 notebeamer/.
     .2 doc/.
     .3 images/.
@@ -255,6 +246,22 @@ While considering the suggestions from friends, I am also thinking about how to 
     .3 notebeamer.cls.
     .2 License.
     .2 README.md.
+    }
+\end{minipage}
+\hfill
+\begin{minipage}{0.48\textwidth}
+    \dirtree{%
+    .1 doc/.
+    .2 images/.
+    .3 HDU.pdf.
+    .3 Inuyasa.jpg.
+    .3 titlepage1.pdf.
+    .3 titlepage2.pdf.
+    .3 newnotedemo.pdf.
+    .3 newnote3sdemo.pdf.
+    .3 newnote4sdemo.pdf.
+    .2 notebeamer-demo.tex.
+    .2 notebeamer-demo.pdf.
     }
 \end{minipage}
 

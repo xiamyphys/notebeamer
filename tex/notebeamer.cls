@@ -14,13 +14,13 @@
 %% ************************************************************************************************************
 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{notebeamer}[11/11/2023 v2.1b NoteBeamer document class]
+\ProvidesClass{notebeamer}[11/11/2023 v2.2b NoteBeamer document class]
 
 %% Global opinions
 \RequirePackage{kvoptions}
 \RequirePackage{etoolbox}
 \SetupKeyvalOptions{family=NB, prefix=NB@, setkeys=\kvsetkeys}
-\newcommand{\ekv}[1]{\kvsetkeys{NB}{#1}}
+\def\ekv#1{\kvsetkeys{NB}{#1}}
 
 \DeclareStringOption[normal]{color}
 \DeclareVoidOption{lighter}{\ekv{color=lighter}}
@@ -45,7 +45,7 @@
 %% Global definitions
 \def\notewidth{6.32}
 \def\noteheight{8.18}
-\renewcommand{\author}[1]{\gdef\@author{#1}}
+\def\author#1{\gdef\@author{#1}}
 \def\mail#1{\gdef\@mail{\href{mailto:#1}{\nolinkurl{#1}}}}
 \NewDocumentCommand\chapter{s o m}{
     \IfBooleanTF{#1}{}{
@@ -81,7 +81,7 @@
 \def\chaptername{\faIcon{seedling} Chapter}
 
 %%%% 1 note per page
-\newcommand{\newnote}[2]{
+\def\newnote#1#2{
     \refstepcounter{note}
     \addtocounter{note}{-1}
     \foreach \n in {#1,...,#2}{
@@ -116,7 +116,7 @@
 }
 
 %%%% 3 beamers per page
-\newcommand{\threebeamers}[3]{
+\def\threebeamers#1#2#3{
     \refstepcounter{note}
     \begin{tikzpicture}
         \fill [lightyellow!50] (0,0) rectangle (\notewidth in,\noteheight in);% 边界
@@ -124,7 +124,7 @@
 
         %%%%%% imput file
         \foreach \n in {#1,#2,#3}
-        \node [yshift=((27.5-(\n-#1)*11+\thenote*33)*0.028*\noteheight in),inner sep=0pt] at (0.3125*\notewidth in,0.038*\noteheight in) {\ifcsname @chapter\endcsname\includegraphics[height=2.40492 in,page=\n]{\@courseware}\fi};
+        \node [yshift=(27.5-(\n-#1)*11)*0.028*\noteheight in,inner sep=0pt] at (0.3125*\notewidth in,0.038*\noteheight in) {\ifcsname @chapter\endcsname\includegraphics[height=2.40492 in,page=\n]{\@courseware}\fi};
 
         %%%%%% draw lines & dots
         \foreach \a in {0,...,33}
@@ -157,14 +157,14 @@
 }
 
 %%%% 4 slides per page
-\newcommand{\fourbeamers}[4]{
+\def\fourbeamers#1#2#3#4{
     \refstepcounter{note}
     \begin{tikzpicture}
         \fill [lightyellow!50] (0,0) rectangle (\notewidth in,\noteheight in);% 边界
         \ifcsname @sticker\endcsname\node [anchor=south east,opacity=0.24,inner sep=0pt] at (0.985*\notewidth in,0.012*\noteheight in) {\includegraphics[height=1.07158 in]{\@sticker}};\fi
         %%%%%% imput file
         \foreach \n in {#1,#2,#3,#4}
-        \node [yshift=((28.875-(\n-#1)*8.25+\thenote*33)*0.028*\noteheight in),inner sep=0pt] at (0.3125*\notewidth in,0.038*\noteheight in) {\ifcsname @chapter\endcsname\includegraphics[height=1.77506 in,page=\n]{\@courseware}\fi};
+        \node [yshift=(28.875-(\n-#1)*8.25)*0.028*\noteheight in,inner sep=0pt] at (0.3125*\notewidth in,0.038*\noteheight in) {\ifcsname @chapter\endcsname\includegraphics[height=1.77506 in,page=\n]{\@courseware}\fi};
 
         \foreach \a in {0,...,33}
         \foreach \b in {18,...,29}
@@ -261,9 +261,9 @@
 }
 
 %% covers
-\ifdefstring{\NB@color}{lighter}{\newcommand{\@saturation}{.16}}{\relax}
-\ifdefstring{\NB@color}{normal}{\newcommand{\@saturation}{.12}}{\relax}
-\ifdefstring{\NB@color}{darker}{\newcommand{\@saturation}{.08}}{\relax}
+\ifdefstring{\NB@color}{lighter}{\def\@saturation{.16}}{\relax}
+\ifdefstring{\NB@color}{normal}{\def\@saturation{.12}}{\relax}
+\ifdefstring{\NB@color}{darker}{\def\@saturation{.08}}{\relax}
 
 \definecolor{H1}{Hsb}{349,\@saturation,.9}% 海棠紅 (Hangzhou MTR L 1 )
 \definecolor{H2}{Hsb}{23, \@saturation,.9}% 丹桂橙 (Hangzhou Metro 2 )
