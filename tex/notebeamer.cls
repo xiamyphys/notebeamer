@@ -14,7 +14,7 @@
 %% ************************************************************************************************************
 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{notebeamer}[11/11/2023 v2.2b NoteBeamer document class]
+\ProvidesClass{notebeamer}[2023/11/15 v2.3a NoteBeamer document class]
 
 %% Global opinions
 \RequirePackage{kvoptions}
@@ -22,10 +22,16 @@
 \SetupKeyvalOptions{family=NB, prefix=NB@, setkeys=\kvsetkeys}
 \def\ekv#1{\kvsetkeys{NB}{#1}}
 
-\DeclareStringOption[normal]{color}
-\DeclareVoidOption{lighter}{\ekv{color=lighter}}
-\DeclareVoidOption{normal}{\ekv{color=normal}}
-\DeclareVoidOption{darker}{\ekv{color=darker}}
+\DeclareStringOption[normal]{saturation}
+\DeclareVoidOption{lighter}{\ekv{saturation=lighter}}
+\DeclareVoidOption{light}{\ekv{saturation=light}}
+\DeclareVoidOption{normal}{\ekv{saturation=normal}}
+\DeclareVoidOption{dark}{\ekv{saturation=dark}}
+\DeclareVoidOption{darker}{\ekv{saturation=darker}}
+
+\DeclareStringOption[main]{color}
+\DeclareVoidOption{main}{\ekv{color=main}}
+\DeclareVoidOption{colorful}{\ekv{color=colorful}}
 
 \DeclareStringOption[times]{font}
 \DeclareVoidOption{times}{\ekv{font=times}}
@@ -37,7 +43,6 @@
 \LoadClass[tikz]{standalone}
 
 %% Packages
-\RequirePackage{xparse}
 \RequirePackage[colorlinks,linkcolor=black,urlcolor=black]{hyperref}
 \RequirePackage{ctex}
 \RequirePackage{fontawesome5}
@@ -48,9 +53,7 @@
 \def\author#1{\gdef\@author{#1}}
 \def\mail#1{\gdef\@mail{\href{mailto:#1}{\nolinkurl{#1}}}}
 \NewDocumentCommand\chapter{s o m}{
-    \IfBooleanTF{#1}{}{
-        \refstepcounter{chap}
-    }
+    \IfBooleanTF{#1}{}{\refstepcounter{chap}}
     \gdef\@chapter{#2}
     \gdef\@courseware{#3}
     \setcounter{note}{0}
@@ -74,8 +77,8 @@
 %% notepages
 \RequirePackage{graphics}
 \graphicspath{{./beamer/}{./figure/}{./figures/}{./image/}{./images/}{./graphics/}{./graphic/}{./pictures/}{./picture/}}% Paths
-\definecolor{lightyellow}{HTML}{F7F6E9}
-\definecolor{紺色}{HTML}{223A70}
+\definecolor{pagecolor}{HTML}{F7F6E9}
+\definecolor{main}{HTML}{223A70}
 \newcounter{chap}
 \newcounter{note}
 \def\chaptername{\faIcon{seedling} Chapter}
@@ -86,7 +89,7 @@
     \addtocounter{note}{-1}
     \foreach \n in {#1,...,#2}{
     \begin{tikzpicture}
-        \fill [lightyellow!50] (0,0) rectangle (\notewidth in,\noteheight in);% 边界
+        \fill [pagecolor!50] (0,0) rectangle (\notewidth in,\noteheight in);% 边界
         \ifcsname @sticker\endcsname\node [anchor=south east,opacity=0.24,inner sep=0pt] at (0.985*\notewidth in,0.012*\noteheight in) {\includegraphics[height=1.07158 in]{\@sticker}};\fi
 
         %%%%%% imput file
@@ -95,22 +98,22 @@
         %%%%%% draw lines & dots: right
         \foreach \a in {9,...,33}
         \foreach \b in {24,...,29}
-        \fill [fill=gray,xshift=\b*0.03*\notewidth in,yshift=\a*\noteheight*0.028 in] (0.05*\notewidth in,0.038*\noteheight in) circle (0.006);% 点
+        \fill [fill=main!50!gray,xshift=\b*0.03*\notewidth in,yshift=\a*\noteheight*0.028 in] (0.05*\notewidth in,0.038*\noteheight in) circle (0.006);% 点
         \foreach \a in {9,...,32}
-        \draw [line cap=round,opacity=0.5,gray!80,yshift=\a*\noteheight*0.028 in] (0.75*\notewidth in+0.25*0.028*\notewidth in,0.038*\noteheight in) --++ (0.2*\notewidth in-0.25*0.028*\notewidth in,0);% 横线
+        \draw [line cap=round,opacity=0.5,main!80!gray!80,yshift=\a*\noteheight*0.028 in] (0.75*\notewidth in+0.25*0.028*\notewidth in,0.038*\noteheight in) --++ (0.2*\notewidth in-0.25*0.028*\notewidth in,0);% 横线
 
         %%%%%% draw lines & dots: bottom
         \foreach \a in {0,...,8,8}
         \foreach \b in {1,...,29}
-        \fill [fill=gray,xshift=\b*0.03*\notewidth in,yshift=\a*\noteheight*0.028 in] (0.05*\notewidth in,0.038*\noteheight in) circle (0.006);% 点
+        \fill [fill=main!50!gray,xshift=\b*0.03*\notewidth in,yshift=\a*\noteheight*0.028 in] (0.05*\notewidth in,0.038*\noteheight in) circle (0.006);% 点
         \foreach \a in {1,...,8,8}
-        \draw [line cap=round,opacity=0.5,gray!80,yshift=\a*\noteheight*0.028 in] (0.05*\notewidth in,0.038*\noteheight in) --++ (0.9*\notewidth in,0);% 横线
+        \draw [line cap=round,opacity=0.5,main!80!gray!80,yshift=\a*\noteheight*0.028 in] (0.05*\notewidth in,0.038*\noteheight in) --++ (0.9*\notewidth in,0);% 横线
 
-        \draw [line cap=round,紺色!80,opacity=0.8,thick] (0.05*\notewidth in,0.038*\noteheight in) --++ (0.9*\notewidth in,0);% 底部粗线
+        \draw [line cap=round,main!80,thick] (0.05*\notewidth in,0.038*\noteheight in) --++ (0.9*\notewidth in,0);% 底部粗线
 
-        \draw [line cap=round,紺色!80,opacity=0.8,thick,yshift=33*0.028*\noteheight in] (0.05*\notewidth in,0.038*\noteheight in) --++ (0.9*\notewidth in,0) node [anchor=south west,at start] {\small\color{紺色}\bfseries\sffamily\chaptername~\ifcsname @chapter\endcsname\thechap. \@chapter\fi} node [anchor=south east] {\small\color{紺色}\bfseries\sffamily Page \thepage\quad};% 顶部粗线
+        \draw [line cap=round,main!80,thick,yshift=33*0.028*\noteheight in] (0.05*\notewidth in,0.038*\noteheight in) --++ (0.9*\notewidth in,0) node [anchor=south west,at start] {\small\color{main}\bfseries\sffamily\chaptername~\ifcsname @chapter\endcsname\thechap. \@chapter\fi} node [anchor=south east] {\small\color{main}\bfseries\sffamily Page \thepage\quad};% 顶部粗线
 
-        \draw [line cap=round,thick,opacity=0.4,gray] (0.75*\notewidth in,0.038*\noteheight in+8.25*0.028*\noteheight in) -- (0.75*\notewidth in,0.038*\noteheight in+32.75*0.028*\noteheight in);% 分栏线
+        \draw [line cap=round,thick,opacity=0.4,main!50!gray] (0.75*\notewidth in,0.038*\noteheight in+8.25*0.028*\noteheight in) -- (0.75*\notewidth in,0.038*\noteheight in+32.75*0.028*\noteheight in);% 分栏线
     \end{tikzpicture}
     }
 }
@@ -119,7 +122,7 @@
 \def\threebeamers#1#2#3{
     \refstepcounter{note}
     \begin{tikzpicture}
-        \fill [lightyellow!50] (0,0) rectangle (\notewidth in,\noteheight in);% 边界
+        \fill [pagecolor!50] (0,0) rectangle (\notewidth in,\noteheight in);% 边界
         \ifcsname @sticker\endcsname\node [anchor=south east,opacity=0.24,inner sep=0pt] at (0.985*\notewidth in,0.012*\noteheight in) {\includegraphics[height=1.07158 in]{\@sticker}};\fi
 
         %%%%%% imput file
@@ -129,15 +132,15 @@
         %%%%%% draw lines & dots
         \foreach \a in {0,...,33}
         \foreach \b in {18,...,29}
-        \fill [fill=gray,xshift=\b*0.03*\notewidth in,yshift=\a*\noteheight*0.028 in] (0.05*\notewidth in,0.038*\noteheight in) circle (0.006);% 点
+        \fill [fill=main!50!gray,xshift=\b*0.03*\notewidth in,yshift=\a*\noteheight*0.028 in] (0.05*\notewidth in,0.038*\noteheight in) circle (0.006);% 点
         \foreach \a in {1,...,32}
-        \draw [line cap=round,opacity=0.5,gray!80,yshift=\a*\noteheight*0.028 in] (0.575*\notewidth in+0.25*0.028*\notewidth in,0.038*\noteheight in) --++ (0.375*\notewidth in-0.25*0.028*\notewidth in,0);% 横线
+        \draw [line cap=round,opacity=0.5,main!80!gray!80,yshift=\a*\noteheight*0.028 in] (0.575*\notewidth in+0.25*0.028*\notewidth in,0.038*\noteheight in) --++ (0.375*\notewidth in-0.25*0.028*\notewidth in,0);% 横线
 
-        \draw [line cap=round,紺色!80,opacity=0.8,thick] (0.05*\notewidth in,0.038*\noteheight in) --++ (0.9*\notewidth in,0);% 底部粗线
+        \draw [line cap=round,main!80,thick] (0.05*\notewidth in,0.038*\noteheight in) --++ (0.9*\notewidth in,0);% 底部粗线
 
-        \draw [line cap=round,紺色!80,opacity=0.8,thick,yshift=33*0.028*\noteheight in] (0.05*\notewidth in,0.038*\noteheight in) --++ (0.9*\notewidth in,0) node [anchor=south west,at start] {\small\color{紺色}\bfseries\sffamily\chaptername~\ifcsname @chapter\endcsname\thechap. \@chapter\fi} node [anchor=south east] {\small\color{紺色}\bfseries\sffamily Page \thepage\quad};% 顶部粗线
+        \draw [line cap=round,main!80,thick,yshift=33*0.028*\noteheight in] (0.05*\notewidth in,0.038*\noteheight in) --++ (0.9*\notewidth in,0) node [anchor=south west,at start] {\small\color{main}\bfseries\sffamily\chaptername~\ifcsname @chapter\endcsname\thechap. \@chapter\fi} node [anchor=south east] {\small\color{main}\bfseries\sffamily Page \thepage\quad};% 顶部粗线
 
-        \draw [line cap=round,thick,opacity=0.4,gray] (0.575*\notewidth in,0.038*\noteheight in+0.25*0.028*\noteheight in) -- (0.575*\notewidth in,0.038*\noteheight in+32.75*0.028*\noteheight in);% 分栏线
+        \draw [line cap=round,thick,opacity=0.4,main!50!gray] (0.575*\notewidth in,0.038*\noteheight in+0.25*0.028*\noteheight in) -- (0.575*\notewidth in,0.038*\noteheight in+32.75*0.028*\noteheight in);% 分栏线
     \end{tikzpicture}
 }
 
@@ -160,7 +163,7 @@
 \def\fourbeamers#1#2#3#4{
     \refstepcounter{note}
     \begin{tikzpicture}
-        \fill [lightyellow!50] (0,0) rectangle (\notewidth in,\noteheight in);% 边界
+        \fill [pagecolor!50] (0,0) rectangle (\notewidth in,\noteheight in);% 边界
         \ifcsname @sticker\endcsname\node [anchor=south east,opacity=0.24,inner sep=0pt] at (0.985*\notewidth in,0.012*\noteheight in) {\includegraphics[height=1.07158 in]{\@sticker}};\fi
         %%%%%% imput file
         \foreach \n in {#1,#2,#3,#4}
@@ -168,15 +171,15 @@
 
         \foreach \a in {0,...,33}
         \foreach \b in {18,...,29}
-        \fill [fill=gray,xshift=\b*0.03*\notewidth in,yshift=\a*\noteheight*0.028 in] (0.05*\notewidth in,0.038*\noteheight in) circle (0.006);% 点
+        \fill [fill=main!50!gray,xshift=\b*0.03*\notewidth in,yshift=\a*\noteheight*0.028 in] (0.05*\notewidth in,0.038*\noteheight in) circle (0.006);% 点
         \foreach \a in {1,...,32}
-        \draw [line cap=round,opacity=0.5,gray!80,yshift=\a*\noteheight*0.028 in] (0.575*\notewidth in+0.25*0.028*\notewidth in,0.038*\noteheight in) --++ (0.375*\notewidth in-0.25*0.028*\notewidth in,0);% 横线
+        \draw [line cap=round,opacity=0.5,main!80!gray!80,yshift=\a*\noteheight*0.028 in] (0.575*\notewidth in+0.25*0.028*\notewidth in,0.038*\noteheight in) --++ (0.375*\notewidth in-0.25*0.028*\notewidth in,0);% 横线
 
-        \draw [line cap=round,紺色!80,opacity=0.8,thick] (0.05*\notewidth in,0.038*\noteheight in) --++ (0.9*\notewidth in,0);% 底部粗线
+        \draw [line cap=round,main!80,thick] (0.05*\notewidth in,0.038*\noteheight in) --++ (0.9*\notewidth in,0);% 底部粗线
 
-        \draw [line cap=round,紺色!80,opacity=0.8,thick,yshift=33*0.028*\noteheight in] (0.05*\notewidth in,0.038*\noteheight in) --++ (0.9*\notewidth in,0) node [anchor=south west,at start] {\small\color{紺色}\bfseries\sffamily\chaptername~\ifcsname @chapter\endcsname\thechap. \@chapter\fi} node [anchor=south east] {\small\color{紺色}\bfseries\sffamily Page \thepage\quad};% 顶部粗线
+        \draw [line cap=round,main!80,thick,yshift=33*0.028*\noteheight in] (0.05*\notewidth in,0.038*\noteheight in) --++ (0.9*\notewidth in,0) node [anchor=south west,at start] {\small\color{main}\bfseries\sffamily\chaptername~\ifcsname @chapter\endcsname\thechap. \@chapter\fi} node [anchor=south east] {\small\color{main}\bfseries\sffamily Page \thepage\quad};% 顶部粗线
 
-        \draw [line cap=round,thick,opacity=0.4,gray] (0.575*\notewidth in,0.038*\noteheight in+0.25*0.028*\noteheight in) -- (0.575*\notewidth in,0.038*\noteheight in+32.75*0.028*\noteheight in);% 分栏线
+        \draw [line cap=round,thick,opacity=0.4,main!50!gray] (0.575*\notewidth in,0.038*\noteheight in+0.25*0.028*\noteheight in) -- (0.575*\notewidth in,0.038*\noteheight in+32.75*0.028*\noteheight in);% 分栏线
     \end{tikzpicture}
 }
 
@@ -198,25 +201,25 @@
 %%%% emptynote (*without chapter title & page number)
 \NewDocumentCommand\clearnote{s}{
 \begin{tikzpicture}
-    \fill [lightyellow!50] (0,0) rectangle (\notewidth in,\noteheight in);% 边界
+    \fill [pagecolor!50] (0,0) rectangle (\notewidth in,\noteheight in);% 边界
     \ifcsname @sticker\endcsname\node [anchor=south east,opacity=0.24,inner sep=0pt] at (0.985*\notewidth in,0.012*\noteheight in) {\includegraphics[height=1.07158 in]{\@sticker}};\fi
     \foreach \a in {0,...,33}
     \foreach \b in {1,...,29}
-    \fill [fill=gray,xshift=\b*0.03*\notewidth in,yshift=\a*\noteheight*0.028 in] (0.05*\notewidth in,0.038*\noteheight in) circle (0.006);% 点
+    \fill [fill=main!50!gray,xshift=\b*0.03*\notewidth in,yshift=\a*\noteheight*0.028 in] (0.05*\notewidth in,0.038*\noteheight in) circle (0.006);% 点
     \foreach \a in {1,...,32}
-    \draw [line cap=round,opacity=0.5,gray!80,yshift=\a*\noteheight*0.028 in] (0.05*\notewidth in,0.038*\noteheight in) --++ (0.9*\notewidth in,0);% 横线
+    \draw [line cap=round,opacity=0.5,main!80!gray!80,yshift=\a*\noteheight*0.028 in] (0.05*\notewidth in,0.038*\noteheight in) --++ (0.9*\notewidth in,0);% 横线
 
-    \draw [line cap=round,紺色!80,opacity=0.8,thick] (0.05*\notewidth in,0.038*\noteheight in) --++ (0.9*\notewidth in,0);% 底部粗线
+    \draw [line cap=round,main!80,thick] (0.05*\notewidth in,0.038*\noteheight in) --++ (0.9*\notewidth in,0);% 底部粗线
 
     \IfBooleanTF{#1}
     {
-    \draw [line cap=round,紺色!80,opacity=0.8,thick,yshift=33*0.028*\noteheight in] (0.05*\notewidth in,0.038*\noteheight in) --++ (0.9*\notewidth in,0) node [anchor=south west,at start] {\small\color{紺色}\bfseries\sffamily\chaptername} node [anchor=south east] {\small\color{紺色}\bfseries\sffamily Page\addtocounter{page}{-1}\quad\quad};% 顶部粗线
+    \draw [line cap=round,main!80,thick,yshift=33*0.028*\noteheight in] (0.05*\notewidth in,0.038*\noteheight in) --++ (0.9*\notewidth in,0) node [anchor=south west,at start] {\small\color{main}\bfseries\sffamily\chaptername} node [anchor=south east] {\small\color{main}\bfseries\sffamily Page\addtocounter{page}{-1}\quad\quad};% 顶部粗线
     }
     {
-    \draw [line cap=round,紺色!80,opacity=0.8,thick,yshift=33*0.028*\noteheight in] (0.05*\notewidth in,0.038*\noteheight in) --++ (0.9*\notewidth in,0) node [anchor=south west,at start] {\small\color{紺色}\bfseries\sffamily\chaptername~\ifcsname @chapter\endcsname\thechap. \@chapter\fi} node [anchor=south east] {\small\color{紺色}\bfseries\sffamily Page \thepage\quad};% 顶部粗线
+    \draw [line cap=round,main!80,thick,yshift=33*0.028*\noteheight in] (0.05*\notewidth in,0.038*\noteheight in) --++ (0.9*\notewidth in,0) node [anchor=south west,at start] {\small\color{main}\bfseries\sffamily\chaptername~\ifcsname @chapter\endcsname\thechap. \@chapter\fi} node [anchor=south east] {\small\color{main}\bfseries\sffamily Page \thepage\quad};% 顶部粗线
     }
 
-    \draw [line cap=round,thick,opacity=0.4,gray] (0.5*\notewidth in,0.038*\noteheight in+0.25*0.028*\noteheight in) -- (0.5*\notewidth in,0.038*\noteheight in+32.75*0.028*\noteheight in);% 分栏线
+    \draw [line cap=round,thick,opacity=0.4,main!50!gray] (0.5*\notewidth in,0.038*\noteheight in+0.25*0.028*\noteheight in) -- (0.5*\notewidth in,0.038*\noteheight in+32.75*0.028*\noteheight in);% 分栏线
 \end{tikzpicture}
 }
 
@@ -231,24 +234,24 @@
 %%%% emptynote with school title (*without chapter title & page number)
 \NewDocumentCommand\clearhdunote{s}{
 \begin{tikzpicture}
-    \fill [lightyellow!50] (0,0) rectangle (\notewidth in,\noteheight in);% 边界
+    \fill [pagecolor!50] (0,0) rectangle (\notewidth in,\noteheight in);% 边界
     \ifcsname @sticker\endcsname\node [anchor=south east,opacity=0.24,inner sep=0pt] at (0.985*\notewidth in,0.012*\noteheight in) {\includegraphics[height=1.07158 in]{\@sticker}};\fi
     \foreach \a in {0,...,32}
     \foreach \b in {1,...,29}
-    \fill [fill=gray,xshift=\b*0.03*\notewidth in,yshift=\a*\noteheight*0.028 in] (0.05*\notewidth in,0.038*\noteheight in) circle (0.006);% 点
+    \fill [fill=main!50!gray,xshift=\b*0.03*\notewidth in,yshift=\a*\noteheight*0.028 in] (0.05*\notewidth in,0.038*\noteheight in) circle (0.006);% 点
     \foreach \a in {1,...,31}
-    \draw [line cap=round,opacity=0.5,gray!80,yshift=\a*\noteheight*0.028 in] (0.05*\notewidth in,0.038*\noteheight in) --++ (0.9*\notewidth in,0);% 横线
+    \draw [line cap=round,opacity=0.5,main!80!gray!80,yshift=\a*\noteheight*0.028 in] (0.05*\notewidth in,0.038*\noteheight in) --++ (0.9*\notewidth in,0);% 横线
 
     \IfBooleanTF{#1}
     {
-    \draw [line cap=round,紺色!80,opacity=0.8,thick] (0.05*\notewidth in,0.038*\noteheight in) --++ (0.9*\notewidth in,0) node [anchor=north east,darkgray] {\small\color{紺色}\bfseries\sffamily Page\addtocounter{page}{-1}\quad\quad};% 底部粗线
+    \draw [line cap=round,main!80,thick] (0.05*\notewidth in,0.038*\noteheight in) --++ (0.9*\notewidth in,0) node [anchor=north east,darkgray] {\small\color{main}\bfseries\sffamily Page\addtocounter{page}{-1}\quad\quad};% 底部粗线
     }{
-    \draw [line cap=round,紺色!80,opacity=0.8,thick] (0.05*\notewidth in,0.038*\noteheight in) --++ (0.9*\notewidth in,0) node [anchor=north east,darkgray] {\small\color{紺色}\bfseries\sffamily Page \thepage\quad};% 底部粗线
+    \draw [line cap=round,main!80,thick] (0.05*\notewidth in,0.038*\noteheight in) --++ (0.9*\notewidth in,0) node [anchor=north east,darkgray] {\small\color{main}\bfseries\sffamily Page \thepage\quad};% 底部粗线
     }
 
-    \draw [line cap=round,紺色!80,opacity=0.8,thick,yshift=32*0.028*\noteheight in] (0.05*\notewidth in,0.038*\noteheight in) --++ (0.9*\notewidth in,0)\ifcsname @logo\endcsname node [anchor=west,at start,yshift=0.033*\noteheight in,inner sep=0pt] {\href{\@edu}{\includegraphics[height=0.45808 in]{\@logo}}} node [anchor=east,yshift=0.033*\noteheight in] {\bfseries\heiti\color{紺色}\faIcon{map-pin} \@address\quad\quad}\fi;% 顶部粗线
+    \draw [line cap=round,main!80,thick,yshift=32*0.028*\noteheight in] (0.05*\notewidth in,0.038*\noteheight in) --++ (0.9*\notewidth in,0)\ifcsname @logo\endcsname node [anchor=west,at start,yshift=0.033*\noteheight in,inner sep=0pt] {\href{\@edu}{\includegraphics[height=0.45808 in]{\@logo}}} node [anchor=east,yshift=0.033*\noteheight in] {\bfseries\heiti\color{main}\faIcon{map-pin} \@address\quad\quad}\fi;% 顶部粗线
 
-    \draw [line cap=round,thick,opacity=0.4,gray] (0.5*\notewidth in,0.038*\noteheight in+0.25*0.028*\noteheight in) -- (0.5*\notewidth in,0.038*\noteheight in+31.75*0.028*\noteheight in);% 分栏线
+    \draw [line cap=round,thick,opacity=0.4,main!50!gray] (0.5*\notewidth in,0.038*\noteheight in+0.25*0.028*\noteheight in) -- (0.5*\notewidth in,0.038*\noteheight in+31.75*0.028*\noteheight in);% 分栏线
 \end{tikzpicture}
 }
 
@@ -261,17 +264,26 @@
 }
 
 %% covers
-\ifdefstring{\NB@color}{lighter}{\def\@saturation{.16}}{\relax}
-\ifdefstring{\NB@color}{normal}{\def\@saturation{.12}}{\relax}
-\ifdefstring{\NB@color}{darker}{\def\@saturation{.08}}{\relax}
+\ifdefstring{\NB@saturation}{lighter}{\def\@saturation{.18}}{\relax}
+\ifdefstring{\NB@saturation}{light}{\def\@saturation{.15}}{\relax}
+\ifdefstring{\NB@saturation}{normal}{\def\@saturation{.12}}{\relax}
+\ifdefstring{\NB@saturation}{dark}{\def\@saturation{.09}}{\relax}
+\ifdefstring{\NB@saturation}{darker}{\def\@saturation{.06}}{\relax}
 
 \definecolor{H1}{Hsb}{349,\@saturation,.9}% 海棠紅 (Hangzhou MTR L 1 )
+\definecolor{H1*}{HTML}{702230}
 \definecolor{H2}{Hsb}{23, \@saturation,.9}% 丹桂橙 (Hangzhou Metro 2 )
+\definecolor{H2*}{HTML}{703F22}
 \definecolor{H3}{Hsb}{48, \@saturation,.9}% 柠檬黄 (Hangzhou Metro 3 )
+\definecolor{H3*}{HTML}{706022}
 \definecolor{H4}{Hsb}{103,\@saturation,.9}% 香樟绿 (Hangzhou Metro 4 )
+\definecolor{H4*}{HTML}{387022}
 \definecolor{H5}{Hsb}{188,\@saturation,.9}% 青藍色 (Hangzhou MTR L 5 )
+\definecolor{H5*}{HTML}{226570}
 \definecolor{H6}{Hsb}{207,\@saturation,.9}% 海洋蓝 (Hangzhou Metro 6 )
+\definecolor{H6*}{HTML}{224C70}
 \definecolor{H7}{Hsb}{290,\@saturation,.9}% 浪漫紫 (Hangzhou Metro 7 )
+\definecolor{H7*}{HTML}{632270}
 
 \NewDocumentCommand\notebook{s O{H5} m O{}}{
     \setcounter{chap}{0}
@@ -285,6 +297,8 @@
         \draw [thick,line cap=round] (0.65*\notewidth in,0.05*\noteheight in) --++ (0.25*\notewidth in,0) node [anchor=south west] {\large\faIcon{feather-alt}} \ifcsname @mail\endcsname node [midway,anchor=south] {\bfseries\texttt{\@mail}}\fi node [midway,anchor=south,yshift=2em] {\bfseries\sffamily\large\ifcsname @author\endcsname\@author\fi};
         \ifcsname @logo\endcsname\node [anchor=north west] at (0.025*\notewidth in,0.991*\noteheight in) {\href{\@edu}{\includegraphics[width=2.212 in]{\@logo}}};\fi
     \end{tikzpicture}
+    \ifdefstring{\NB@color}{colorful}{\colorlet{main}{main}}{\relax}
+    \ifdefstring{\NB@color}{colorful}{\colorlet{main}{#2*}}{\relax}
     \ifcsname @flyleaf\endcsname
     \addtocounter{page}{-1}
     \begin{tikzpicture}
