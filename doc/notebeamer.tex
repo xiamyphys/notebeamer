@@ -1,0 +1,135 @@
+\documentclass[11pt,svgnames]{article}
+\usepackage[notelinecolor=MidnightBlue,notemargin=.75in]{notebeamer}
+\usepackage{geometry,titlesec,authblk,hyperref,hologo,pgfpages,lipsum}
+\titleformat*{\section}{\bfseries\large}
+\titleformat*{\subsection}{\bfseries\normalsize}
+\hologoFontSetup{general=\sffamily}
+\usepackage{datetime}\yyyymmdddate
+\usepackage[libertine,mono=false]{newtx}
+\usepackage{listings}
+\lstset{language=[LaTeX]TeX,basicstyle=\ttfamily,breaklines=true,columns=flexible}
+\hypersetup{colorlinks,urlcolor=MidnightBlue}
+\def\pkg#1{\textcolor{DarkGreen}{\textsf{#1}}}
+\def\mode#1{\textcolor{Indigo}{\textsf{#1}}}
+\def\cmd#1{\textcolor{MidnightBlue}{\texttt{\string#1}}}
+
+\title{\bfseries The \pkg{notebeamer} Package}
+\author{Mingyu Hsia, \href{mailto:xiamyphys@gmail.com}{\ttfamily xiamyphys@gmail.com}}
+\affil{Hangzhou Dianzi University}
+\date{\today\quad Version 3.0a\thanks{\url{https://github.com/xiamyphys/notebeamer}}}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+
+This is the document for the \pkg{notebeamer} package, which provides an easy way to input slides on notepages quickly for making annotations.
+
+Welcome to feedback bugs or ideas via email \href{mailto:xiamyphys@gmail.com}{\ttfamily xiamyphys@gmail.com} or \href{https://github.com/xiamyphys/fadingimage}{GitHub}.
+
+\end{abstract}
+
+\section{Installing \pkg{notebeamer} and loading it}
+
+Simply download \verb|notebeamer.cls| file from \href{https://github.com/xiamyphys/notebeamer}{GitHub} or \href{https://ctan.org/pkg/fadingimage}{CTAN} and save it under your working directory. However, I strongly suggest to use terminal to install and update all packages to the latest version
+
+\begin{verbatim}
+    sudo tlmgr update --self --all
+\end{verbatim}
+
+To learn more, please refer to \href{https://tex.stackexchange.com/questions/55437/how-do-i-update-my-tex-distribution}{How do I update my \hologo{TeX} distribution?}
+
+\section{Key values of this package}
+
+\begin{verbatim}
+    \usepackage[notelinecolor=<color>,notemargin=<margin>]{notebeamer}
+\end{verbatim}
+
+This package has two keys: \cmd{notelinecolor} and \cmd{notemargin}.
+
+The \cmd{notelinecolor} key can set the color notelines, the \cmd{notemargin} key can set the margin of notepages.
+
+If you have not set the keys, the default values of the four keys will be applied
+
+\begin{verbatim}
+    notelinecolor=MidnightBlue,     notemargin=.75in
+\end{verbatim}
+
+Please set the geometry for the whole document \textbf{after} you set the notemargin, that is
+
+\begin{verbatim}
+    \usepackage[notemargin=<margin>]{notebeamer}  \geometry{<keyval list>}
+\end{verbatim}
+
+otherwise the notemargin configuration won't work.
+
+\section{The margin of notepages}
+
+The relation of the margin of notepages and the margin configuration of package \pkg{geometry} satisfies the following expression
+
+\begin{verbatim}
+    topmargin = bottommargin = (\paperwidth-\textwidth)/3
+    leftmargin = rightmargin = (2\paperheight-2\textheight)/5
+\end{verbatim}
+
+\section{Commands of \pkg{notebeamer}}
+
+\subsection{The \cmd{notechap} command}
+
+\begin{verbatim}
+    \notechap [<notetitle>] {<filename>}
+\end{verbatim}
+
+This command can assign the following notetitle and the PDF file you want to input.
+
+\subsection{The \cmd{notelinenum} and \cmd{notecolumnratio} commands}
+
+\begin{verbatim}
+    \notelinenum{<number>}  \notecolumnratio{<number>}
+\end{verbatim}
+
+The two commands can assign the number of notelines and the ratio of columns on following notepages respectively. The default value of the number of notelines is \verb|27| and that of the ratio of columns is \verb|0.5|.
+
+\subsection{The \cmd{hidenotelinetrue} and \cmd{hidenotelinefalse} commands}
+
+Notepages after the \cmd{hidenotelinetrue} command the notelines will be hidden while notepages after command \cmd{hidenotelinefalse} the notelines will be restored.
+
+\subsection{The \cmd{newnotepage}}
+
+\begin{verbatim}
+    \newnotepage[<number>]  \newnotepage*[<number>]
+\end{verbatim}
+
+The \cmd{newnotepage} command can create empty notepage(s). If a star (*) is added after the command, the created empty notepage(s) won't have column rule.
+
+\subsection{The \cmd{includebeamer} command}
+
+\begin{verbatim}
+    \includebeamer[<number of slides per page>]{<start page>}{<end page>}
+\end{verbatim}
+
+This commands will create notepages that were inserted images on the left sidnumber of slides per page and the last two variables can set the start page and end page of the PDF file you want to insert that assigned by the command \cmd{notechap}.
+
+\appendix
+\section{The \pkg{litesolution} class}
+
+This class provides a lite design for typesetting solutions of exams, textbooks or other exercises. The \pkg{notebeamer} package is contained in the \pkg{litesolution} class now.
+
+\clearpage
+\pgfpagesuselayout{4 on 1}[letterpaper]
+
+\notelinenum{27}\pagecolor{yellow!2}
+
+\notechap[Chapter 1. Introduction \& Fundamental Concepts]{figures/beamerdemo.pdf}
+\notecolumnratio{.57}
+\hidenotelinefalse      \includebeamer[3]{2}{4}
+\notecolumnratio{.43}
+\hidenotelinetrue       \includebeamer[4]{3}{6}
+
+\notechap[Phys. Rev. B. Volume 50, Number 8]{figures/paperdemo.pdf}
+\notecolumnratio{.72}
+\hidenotelinefalse      \includebeamer[1]{2}{2}
+
+\notecolumnratio{.5}    \newnotepage
+
+\end{document}

@@ -1,0 +1,160 @@
+%% ***********************************************************
+%%   Copyright 2024 by Mingyu Hsia <xiamyphys@gmail.com>     *
+%%                                                           *
+%%   This work may be distributed and/or modified under      *
+%%   the conditions of the LaTeX Project Public License      *
+%%                                                           *
+%%       http://www.latex-project.org/lppl.txt               *
+%%                                                           *
+%%   either version 1.3c of this license or any later        *
+%%   version.                                                *
+%%                                                           *
+%%   This work has the LPPL maintenance status `maintained'. *
+%%                                                           *
+%%   The Current Maintainer of this work is Mingyu Hsia.     *
+%%                                                           *
+%%   This work consists of the files notebeamer.sty,         *
+%%                               and README.md.              *
+%%   available at https://github.com/xiamyphys/notebeamer    *
+%% Thanks `wipet' (https://petr.olsak.net/) provides         * 
+%% Beamers automatically inserts module                      *
+%% ***********************************************************
+% !Mode:: "TeX:UTF-8"
+\NeedsTeXFormat{LaTeX2e}[2020/10/01]
+\ProvidesPackage{notebeamer}[2024/04/19 v3.0a notebeamer package]
+\RequirePackage{xkeyval}
+
+\DeclareOptionX{notelinecolor}{\gdef\@notelinecolor{#1}}
+\ExecuteOptionsX{notelinecolor=darkgray}
+\DeclareOptionX{notemargin}{\gdef\@notemargin{#1}}
+\ExecuteOptionsX{notemargin=.75in}
+
+\DeclareOptionX*{\PackageWarning{notebeamer}{`\CurrentOption' ignored}}
+\ProcessOptionsX\relax
+
+\RequirePackage{geometry,calc,tikz}
+\newgeometry{margin=\@notemargin}
+\tikzset{every picture/.append style={%
+        line join=round,line cap=round,thick}}
+\usetikzlibrary{calc}
+
+\newcounter{note}
+\NewDocumentCommand\notechap{o m}{
+    \gdef\@notechap{#1}
+    \gdef\@beamer{#2}
+    \setcounter{note}{0}}
+
+\newlength\hnotemargin\newlength\vnotemargin
+\setlength\hnotemargin{(\paperwidth-\textwidth)/3}
+\setlength\vnotemargin{(2\paperheight-2\textheight)/5}
+\newlength\notewidth\newlength\noteheight
+\setlength\notewidth{\paperwidth-2\hnotemargin}
+\setlength\noteheight{\paperheight-2\vnotemargin}
+\newlength\notelinespace
+
+\def\notelinenum#1{%
+    \gdef\@notelinenum{#1}
+    \setlength\notelinespace{\noteheight/#1}}
+\ifcsname @notelinenum\endcsname
+\else
+    \gdef\@notelinenum{27}
+    \setlength\notelinespace{\noteheight/27}
+\fi
+\def\notecolumnratio#1{\gdef\@notecolumnratio{#1}}
+\ifcsname @notecolumnratio\endcsname
+\else
+    \gdef\@notecolumnratio{.5}
+\fi
+
+\newif\ifhidenoteline
+
+\def\@onepaper#1{
+    \refstepcounter{note}\addtocounter{note}{-1}
+    \clearpage\thispagestyle{empty}
+    \begin{tikzpicture}[remember picture,overlay]
+        %%%%%% notepage lines
+        \draw [\@notelinecolor,opacity=.8,very thick] ($(current page.north west)+(\hnotemargin,-\vnotemargin)$) --++ (\notewidth,0) node [above right,at start,yshift=1ex] {\large\bfseries\sffamily\ifcsname @notechap\endcsname\@notechap\fi} node [above left,yshift=1ex] {\large\bfseries\sffamily Page \thepage\quad}; % 顶部粗线
+        \draw [\@notelinecolor,opacity=.8,thick] ($(current page.south west)+(\hnotemargin,\vnotemargin)$) --++ (\notewidth,0); % 底部粗线
+        \ifhidenoteline\else
+        \foreach \a in {2,...,\@notelinenum}
+            \draw [\@notelinecolor,opacity=.4,thick] ($(current page.south west)+(\hnotemargin,{\vnotemargin+(\a-1)*\notelinespace})$) --++ (\notewidth,0); % 横线
+        \fi
+        %%%%%% imput file
+        \node [below,yshift=\thenote*\noteheight-1ex,inner sep=0pt] at ($(current page.north west)+(\hnotemargin+.5*\@notecolumnratio*\notewidth,-\vnotemargin)$) {\ifcsname @notechap\endcsname\includegraphics[width=\dimeval{\@notecolumnratio\notewidth},page=#1]{\@beamer}\fi};
+    \end{tikzpicture}
+}
+
+\def\@threebeamer#1#2#3{
+    \refstepcounter{note}\addtocounter{note}{-1}
+    \clearpage\thispagestyle{empty}
+    \begin{tikzpicture}[remember picture,overlay]
+        %%%%%% notepage lines
+        \draw [\@notelinecolor,opacity=.8,very thick] ($(current page.north west)+(\hnotemargin,-\vnotemargin)$) --++ (\notewidth,0) node [above right,at start,yshift=1ex] {\large\bfseries\sffamily\ifcsname @notechap\endcsname\@notechap\fi} node [above left,yshift=1ex] {\large\bfseries\sffamily Page \thepage\quad}; % 顶部粗线
+        \draw [\@notelinecolor,opacity=.8,thick] ($(current page.south west)+(\hnotemargin,\vnotemargin)$) --++ (\notewidth,0); % 底部粗线
+        \ifhidenoteline\else
+        \foreach \a in {2,...,\@notelinenum}
+            \draw [\@notelinecolor,opacity=.4,thick] ($(current page.south west)+(\hnotemargin+\@notecolumnratio*\notewidth+1ex,{\vnotemargin+(\a-1)*\notelinespace})$) --++ ({(1-\@notecolumnratio)*\notewidth-1ex},0); % 横线
+        \fi
+        \draw [\@notelinecolor!80,opacity=.5,very thick] ($(current page.south west)+(\hnotemargin+\@notecolumnratio*\notewidth,\vnotemargin+1ex)$) --++ (0,\noteheight-2ex); % 分栏线
+        %%%%%% imput file
+        \foreach \n in {#1,#2,#3}
+            \node [yshift=(2*#1-2*\n-1)*\noteheight/6+\thenote*\noteheight,inner sep=0pt] at ($(current page.north west)+(\hnotemargin+.5*\@notecolumnratio*\notewidth,-\vnotemargin)$) {\ifcsname @notechap\endcsname\includegraphics[height=\dimeval{\noteheight/3-2ex},page=\n]{\@beamer}\fi};
+    \end{tikzpicture}
+}
+
+\def\@fourbeamer#1#2#3#4{
+    \refstepcounter{note}\addtocounter{note}{-1}
+    \clearpage\thispagestyle{empty}
+    \begin{tikzpicture}[remember picture,overlay]
+        \draw [\@notelinecolor,opacity=.8,very thick] ($(current page.north west)+(\hnotemargin,-\vnotemargin)$) --++ (\notewidth,0) node [above right,at start,yshift=1ex] {\large\bfseries\sffamily\ifcsname @notechap\endcsname\@notechap\fi} node [above left,yshift=1ex] {\large\bfseries\sffamily Page \thepage\quad}; % 顶部粗线
+        \draw [\@notelinecolor,opacity=.8,thick] ($(current page.south west)+(\hnotemargin,\vnotemargin)$) --++ (\notewidth,0); % 底部粗线
+        \ifhidenoteline\else
+        \foreach \a in {2,...,\@notelinenum}
+            \draw [opacity=.5,\@notelinecolor,opacity=.4,thick] ($(current page.south west)+(\hnotemargin+\@notecolumnratio*\notewidth+1ex,{\vnotemargin+(\a-1)*\notelinespace})$) --++ ({(1-\@notecolumnratio)*\notewidth-1ex},0); % 横线
+        \fi
+        \draw [\@notelinecolor,opacity=.5,very thick] ($(current page.south west)+(\hnotemargin+\@notecolumnratio*\notewidth,\vnotemargin+1ex)$) --++ (0,\noteheight-2ex); % 分栏线
+        %%%%%% imput file
+        \foreach \n in {#1,#2,#3,#4}
+            \node [yshift=(2*#1-2*\n-1)*\noteheight/8+\thenote*\noteheight,inner sep=0pt] at ($(current page.north west)+(\hnotemargin+.5*\@notecolumnratio*\notewidth,-\vnotemargin)$) {\ifcsname @notechap\endcsname\includegraphics[height=\dimeval{\noteheight/4-2ex},page=\n]{\@beamer}\fi};
+    \end{tikzpicture}
+}
+
+\ExplSyntaxOn\cs_new_eq:NN \Repeat \prg_replicate:nn\ExplSyntaxOff
+\NewDocumentCommand\newnotepage{s O{1}}{\Repeat{#2}{
+    \refstepcounter{note}
+    \clearpage\thispagestyle{empty}
+    \begin{tikzpicture}[remember picture,overlay]
+        \draw [\@notelinecolor,opacity=.8,very thick] ($(current page.north west)+(\hnotemargin,-\vnotemargin)$) --++ (\notewidth,0) node [above right,at start,yshift=1ex] {\large\bfseries\sffamily\ifcsname @notechap\endcsname\@notechap\fi} node [above left,yshift=1ex] {\large\bfseries\sffamily Page \thepage\quad}; % 顶部粗线
+        \draw [\@notelinecolor,opacity=.8,thick] ($(current page.south west)+(\hnotemargin,\vnotemargin)$) --++ (\notewidth,0); % 底部粗线
+        \ifhidenoteline\else
+        \foreach \a in {2,...,\@notelinenum}
+            \draw [\@notelinecolor,opacity=.4,thick] ($(current page.south west)+(\hnotemargin,{\vnotemargin+(\a-1)*\notelinespace})$) --++ (\notewidth,0); % 横线
+        \fi
+        \IfBooleanF{#1}{% 分栏线
+            \draw [\@notelinecolor,opacity=.5,very thick] ($(current page.south west)+(\hnotemargin+\@notecolumnratio*\notewidth,\vnotemargin+1ex)$) --++ (0,\noteheight-2ex);}
+\end{tikzpicture}}
+}
+
+\newcount\tmpnum
+\def\valnum#1{%
+    \ifnum\maxnum>\numexpr\tmpnum+#1\relax 
+        \the\numexpr\tmpnum+#1\relax \else \maxnum\fi}
+\NewDocumentCommand\includebeamer{ o m m }{%
+    \ifnum #1=1
+    \def\maxnum{#3}\tmpnum=#2
+    \loop
+        \unless\ifnum\tmpnum>#3 \@onepaper{\valnum0}
+        \advance\tmpnum by1
+    \repeat\fi
+    \ifnum #1=3
+    \def\maxnum{#3}\tmpnum=#2
+    \loop
+        \unless\ifnum\tmpnum>#3 \@threebeamer{\valnum0}{\valnum1}{\valnum2}
+        \advance\tmpnum by3
+    \repeat\fi
+    \ifnum #1=4
+    \def\maxnum{#3}\tmpnum=#2
+    \loop      
+        \unless\ifnum\tmpnum>#3 \@fourbeamer{\valnum0}{\valnum1}{\valnum2}{\valnum3}      
+        \advance\tmpnum by4   
+    \repeat\fi}
