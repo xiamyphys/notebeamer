@@ -1,6 +1,7 @@
 \documentclass[11pt,svgnames]{article}
 \usepackage[notelinecolor=MidnightBlue,notemargin=.75in]{notebeamer}
-\usepackage{geometry,titlesec,authblk,hyperref,hologo,pgfpages,lipsum}
+\usepackage{indentfirst,titlesec,authblk,hyperref,hologo,pgfpages,lipsum}
+\geometry{margin=1in}
 \titleformat*{\section}{\bfseries\large}
 \titleformat*{\subsection}{\bfseries\normalsize}
 \hologoFontSetup{general=\sffamily}
@@ -14,9 +15,9 @@
 \def\cmd#1{\textcolor{MidnightBlue}{\texttt{\string#1}}}
 
 \title{\bfseries The \pkg{notebeamer} Package}
-\author{Mingyu Hsia, \href{mailto:xiamyphys@gmail.com}{\ttfamily xiamyphys@gmail.com}}
+\author{Mingyu Hsia, \href{mailto:xiamyphys@hdu.edu.cn}{\ttfamily xiamyphys@hdu.edu.cn}}
 \affil{Hangzhou Dianzi University}
-\date{\today\quad Version 3.0a\thanks{\url{https://github.com/xiamyphys/notebeamer}}}
+\date{\today\quad Version 3.0c\thanks{\url{https://github.com/xiamyphys/notebeamer}}}
 
 \begin{document}
 \maketitle
@@ -25,13 +26,13 @@
 
 This is the document for the \pkg{notebeamer} package, which provides an easy way to input slides on notepages quickly for making annotations.
 
-Welcome to feedback bugs or ideas via email \href{mailto:xiamyphys@gmail.com}{\ttfamily xiamyphys@gmail.com} or \href{https://github.com/xiamyphys/fadingimage}{GitHub}.
+Welcome to feedback bugs or ideas via email \href{mailto:xiamyphys@hdu.edu.cn}{\ttfamily xiamyphys@hdu.edu.cn} or \href{https://github.com/xiamyphys/notebeamer}{GitHub}.
 
 \end{abstract}
 
 \section{Installing \pkg{notebeamer} and loading it}
 
-Simply download \verb|notebeamer.cls| file from \href{https://github.com/xiamyphys/notebeamer}{GitHub} or \href{https://ctan.org/pkg/fadingimage}{CTAN} and save it under your working directory. However, I strongly suggest to use terminal to install and update all packages to the latest version
+Simply download \verb|notebeamer.cls| file from \href{https://github.com/xiamyphys/notebeamer}{GitHub} or \href{https://ctan.org/pkg/notebeamer}{CTAN} and save it under your working directory. However, I strongly suggest to use terminal to install and update all packages to the latest version
 
 \begin{verbatim}
     sudo tlmgr update --self --all
@@ -111,9 +112,15 @@ The \cmd{newnotepage} command can create empty notepage(s). If a star (*) is add
 This commands will create notepages that were inserted images on the left sidnumber of slides per page and the last two variables can set the start page and end page of the PDF file you want to insert that assigned by the command \cmd{notechap}.
 
 \appendix
-\section{The \pkg{litesolution} class}
+\section{Related packages}
 
-This class provides a lite design for typesetting solutions of exams, textbooks or other exercises. The \pkg{notebeamer} package is contained in the \pkg{litesolution} class now.
+\subsection{The \pkg{fadingimage} package}
+
+This package provides macros for inputting full width picture at the edges of pages quickly.
+
+\subsection{The \pkg{litesolution} class}
+
+This class is designed for typesetting solutions of problems in exams, textbooks, etc. The \pkg{notebeamer} package is contained in the \pkg{litesolution} class now.
 
 \clearpage
 \pgfpagesuselayout{4 on 1}[letterpaper]
