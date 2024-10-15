@@ -10,10 +10,4 @@ This work may be distributed and/or modified under the conditions of the [LaTeX 
 
 This work has the LPPL maintenance status `maintained`.
 
-The Current Maintainer of this work is [Mingyu Hsia](https://www.ctan.org/author/xia-my).
-
-## Derivative Works
-
-- [fadingimage](https://ctan.org/pkg/fadingimage): Package provides macros for inputting full width picture at the edges of pages quickly.
-
-- [litesolution](https://ctan.org/pkg/litesolution): Class designed for typesetting solutions of problems in exams, textbooks, etc.
+The Current Maintainer of this work is [Mingyu Xia](https://www.ctan.org/author/xia-my).
